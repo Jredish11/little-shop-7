@@ -8,10 +8,20 @@ class Merchants::ItemsController < ApplicationController
 
   def new
     @item = Item.new
+    @merchant = Merchant.find(params[:merchant_id])
   end
 
   def create
+    item = Item.new(item_params)
+    merchant = Merchant.find(params[:merchant_id])
 
+    if item.save
+      flash[:notice] = "Item created successfully"
+      redirect_to merchant_items_path(merchant)
+    else
+      flash[:alert] = "Item creation failed"
+      redirect_to merchant_items_path(merchant)
+    end
   end
 
   def show
